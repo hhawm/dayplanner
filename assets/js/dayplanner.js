@@ -1,69 +1,25 @@
-// Times 8 AM til 6 PM
-const times = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
-// Time-block updates 
-const timeBlockDelayMS = 30000;
-// "Saving..." bottom notification fade times
-// const fadeToastIn = 200;
-// const fadeToastOut = 1200;
+// Times are supposed to be 9 AM til 5 PM, but went to midnight for testing
+const times = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
-let updateInterval; // Periodic Update of past,present,future class
-let curDate = moment().clone(); // Current Day is initially Today
+// Updates past, present, future time-blocks every 30 seconds(set up at top)
+const timeBlockCheck = 30000;
+var updateInterval;
 
-function loadMultiDaySettings() {
-    // Load Multi-day setting from local storage and set the check accordingly
-    let enableMultiDay = (localStorage.getItem("enableMultiDay") === "true") ? true : false;
-    if (enableMultiDay) {
-        // Set the check, Show the DateGroup, trigger Date Change
-        $("#enableDate").prop("checked", true);
-        $("#dateGroup").show();
-        datePickerChange();
-    }
-}
-
-// When the Multi-day Checkbox changes state
-function multiDayChecked() {
-    // Update Local Storage with new Multi-day setting
-    let $ed = $("#enableDate");
-    localStorage.setItem("enableMultiDay", $ed.prop("checked"));
-    // Show or Hide the Date Selector and reset date as needed
-    if ($ed.is(":checked")) {
-        $("#dateGroup").show();
-    } else {
-        $("#dateGroup").hide();
-        // Reset the day to today
-        curDate = moment();
-        $("#datepicker").val(moment().format('YYYY-MM-DD'));
-        loadDay(0);
-        setCurrentDateLabel();
-    }
-}
-
-// A new date was selected from the Date Picker
-function datePickerChange() {
-    // Get the new date - If the date is not valid default to today
-    curDate = moment($("#datepicker").val(), "YYYY-MM-DD");
-    if (!curDate.isValid()) {
-        curDate = moment();
-    }
-
-    // Update the header, cancel existing timers, fade in the content
-    setCurrentDateLabel();
-    loadDay();
-}
-
-// Handle the Save Button click event
-function handleSave() {
-    var $desc = $(this).siblings(".description");
-    let hour = $desc.attr("data-hour");
-    let text = $desc.val();
-    localStorage.setItem(getStoreDatePrefix() + hour.trim(), text.trim());
-    $("#updating").fadeIn(200).fadeOut(1200);
-}
+// Current Day is initially Today
+var curDate = moment().clone();
 
 // Set's the current day in the header
 function setCurrentDateLabel() {
     $("#currentDay").text(curDate.format('dddd, MMMM Do'));
+}
 
+// Saving info into local storage
+function handleSave() {
+    var saveInLocal = $(this).siblings(".description");
+    var hour = saveInLocal.attr("data-hour");
+    var text = saveInLocal.val();
+    localStorage.setItem(getStoreDatePrefix() + hour.trim(), text.trim());
+    $("#updating").fadeIn(100).fadeOut(1000);
 }
 
 // Load the current day onto the page
@@ -76,12 +32,11 @@ function loadDay(fadeTime = 500) {
         $(".container").append(createTimeBlock(times[i]));
     }
 
-    // Setup Interval to Update past, present, future classes periodically (30s)
-    updateInterval = setInterval(checkTimeBlocks, timeBlockDelayMS);
+    // Updates past, present, future time-blocks every 30 seconds(set up at top)
+    updateInterval = setInterval(checkTimeBlocks, timeBlockCheck);
 
     //****************************************
     // STYLING
-    //****************************************
     // Change opacity of description on hover
     $('.description').hover(function () {
         $(this).toggleClass("active");
@@ -98,11 +53,11 @@ function loadDay(fadeTime = 500) {
 // Go through each hour and compare 
 function checkTimeBlocks() {
     console.log("Check Time Blocks Active");
-    let $descriptions = $('.description');
+    var $descriptions = $('.description');
     $descriptions.each(function (index) {
-        let hour12 = $(this).attr("data-hour"); // Get the hour
-        let t = getMoment12H(hour12);
-        let tense = getTense(t);
+        var hour12 = $(this).attr("data-hour"); // Get the hour
+        var t = getMoment12H(hour12);
+        var tense = getTense(t);
         if ($(this).hasClass(tense)) {
             //console.log("/NO CHANGE");
         } else if (tense === "present") {
@@ -120,16 +75,16 @@ function checkTimeBlocks() {
 
 // Create a Time Block Group
 function createTimeBlock(hour24) {
-    let row = createEl("div", "row");
-    let timeBlock = createEl("div", "time-block");
+    var row = createEl("div", "row");
+    var timeBlock = createEl("div", "time-block");
     timeBlock.appendChild(row);
-    let colHour = createEl("div", "col-sm-1 col-12 pt-3 hour", hour24);
+    var colHour = createEl("div", "col-sm-1 col-12 pt-3 hour", hour24);
     row.appendChild(colHour);
-    let colText = createEl("textarea", "col-sm-10 col-12 description", hour24);
+    var colText = createEl("textarea", "col-sm-10 col-12 description", hour24);
     row.appendChild(colText);
-    let colSave = createEl("div", "col-sm-1 col-12 saveBtn");
+    var colSave = createEl("div", "col-sm-1 col-12 saveBtn");
     row.appendChild(colSave);
-    let icon = createEl("i", "fas fa-save");
+    var icon = createEl("i", "fas fa-save");
     colSave.appendChild(icon);
 
     return timeBlock;
@@ -140,11 +95,11 @@ function createTimeBlock(hour24) {
 // cls = classes to asssign
 // hour24 = the current hour (only used by hour and description classes)
 function createEl(tag, cls, hour24) {
-    let el = document.createElement(tag);
+    var el = document.createElement(tag);
     // Special Handling for Hour and Description Columns which need the hour
     if (hour24) {
-        let t = getMoment24H(hour24);
-        let displayHour = formatAmPm(t);
+        var t = getMoment24H(hour24);
+        var displayHour = formatAmPm(t);
         if (cls.includes("description")) {
             // description class
             cls += " " + getTense(t);
@@ -164,8 +119,8 @@ function createEl(tag, cls, hour24) {
 // t = hour moment
 // returns appropriate tense class (past, present, or future)
 function getTense(t) {
-    let cls;
-    let n = moment();
+    var cls;
+    var n = moment();
 
     if (n.isSame(t, "hour") &&
         n.isSame(t, "day") &&
@@ -182,7 +137,6 @@ function getTense(t) {
 
 //**********************************
 // GET STRING
-//**********************************
 // Get string prefix for localStorage based off curDate
 function getStoreDatePrefix() {
     return curDate.format("YYYYMMDD-");
@@ -190,12 +144,11 @@ function getStoreDatePrefix() {
 
 // Return the moment formated as a 12-hour AM/PM time string (Example: 10AM)
 function formatAmPm(m) {
-    return m.format("hA");
+    return m.format("h A");
 }
 
 //**********************************
 // GET MOMENT
-//**********************************
 // Create a new moment based off curDate and a 12hr AM/PM format time string
 function getMoment12H(hour12) {
     return moment(curDate.format("YYYYMMDD ") + hour12, "YYYYMMDD hA");
@@ -212,7 +165,7 @@ $(function () {
     setCurrentDateLabel();
 
     // Load Multi-day setting from local storage and update the checked state
-    loadMultiDaySettings();
+    // loadMultiDaySettings();
 
     // Watch for click of Enable Multi-day support
     $("#enableDate").on("click", multiDayChecked);

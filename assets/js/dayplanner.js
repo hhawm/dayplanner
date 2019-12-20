@@ -5,15 +5,15 @@ const times = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 const timeBlockCheck = 30000;
 var updateInterval;
 
-// Current Day is initially Today
+// Sets current day from moment function
 var curDate = moment().clone();
 
-// Set's the current day in the header
+// Sets current day in the header
 function setCurrentDateLabel() {
     $("#currentDay").text(curDate.format('dddd, MMMM Do'));
 }
 
-// Saving info into local storage
+// Saves date and description into localstorage
 function handleSave() {
     var saveInLocal = $(this).siblings(".description");
     var hour = saveInLocal.attr("data-hour");
@@ -35,13 +35,11 @@ function loadDay(fadeTime = 500) {
     // Updates past, present, future time-blocks every 30 seconds(set up at top)
     updateInterval = setInterval(checkTimeBlocks, timeBlockCheck);
 
-    //****************************************
-    // STYLING
-    // Change opacity of description on hover
+    // Changes opacity of description on hover
     $('.description').hover(function () {
         $(this).toggleClass("active");
     });
-    // Hover over save button changes opacity and makes disk larger
+    // Changes opacity of save button on hover
     $('.saveBtn').hover(function () {
         $(this).toggleClass("active");
     });
@@ -49,17 +47,16 @@ function loadDay(fadeTime = 500) {
     $(".container").hide().fadeIn(fadeTime);
 }
 
-// Check the timeblocks to see if their tense has changed
-// Go through each hour and compare 
+// Sets timeblocks COLORS to PAST PRESENT or FUTURE
 function checkTimeBlocks() {
     console.log("Check Time Blocks Active");
     var $descriptions = $('.description');
     $descriptions.each(function (index) {
-        var hour12 = $(this).attr("data-hour"); // Get the hour
+        var hour12 = $(this).attr("data-hour"); // Gets hour
         var t = getMoment12H(hour12);
         var tense = getTense(t);
         if ($(this).hasClass(tense)) {
-            //console.log("/NO CHANGE");
+            console.log("NO CHANGE");
         } else if (tense === "present") {
             $(this).removeClass("past future");
         } else if (tense === "past") {
@@ -73,7 +70,7 @@ function checkTimeBlocks() {
     });
 }
 
-// Create a Time Block Group
+// Creates rows and columns for container
 function createTimeBlock(hour24) {
     var row = createEl("div", "row");
     var timeBlock = createEl("div", "time-block");
@@ -91,7 +88,7 @@ function createTimeBlock(hour24) {
     return timeBlock;
 }
 
-// Create a single page element
+// Creates a single page element
 // tag = tag to create 
 // cls = classes to assign
 // hour24 = the current hour (only used by hour and description classes)
@@ -102,23 +99,23 @@ function createEl(tag, cls, hour24) {
         var t = getMoment24H(hour24);
         var displayHour = formatAmPm(t);
         if (cls.includes("description")) {
-            // description class
+            // Descriptions class
             cls += " " + getTense(t);
             el.textContent = localStorage.getItem(getStoreDatePrefix() + displayHour);
             el.setAttribute("data-hour", displayHour);
         } else {
-            // hour class
+            // Hours class
             el.textContent = displayHour.padEnd(4, " ");
         }
     }
-    // Set the classes on the element
+    // Sets classes on the element
     el.setAttribute("class", cls);
     return el;
 }
 
-// Check to see if the specified time is in the past present or future compared to time now.
+// Sets CLASS to PAST PRESENT FUTURE compared to current time
 // t = hour moment
-// returns appropriate tense class (past, present, or future)
+// Returns appropriate tense class (past, present, or future)
 function getTense(t) {
     var cls;
     var n = moment();
@@ -136,38 +133,35 @@ function getTense(t) {
     return cls;
 }
 
-//**********************************
-// GET STRING
-// Get string prefix for localStorage based off curDate
+// Gets curDate string from localstorage
 function getStoreDatePrefix() {
     return curDate.format("YYYYMMDD-");
 }
 
-// Return the moment formated as a 12-hour AM/PM time string (Example: 10AM)
+// Returns a 12-hour AM/PM time string
 function formatAmPm(m) {
     return m.format("h A");
 }
 
-//**********************************
-// GET MOMENT
-// Create a new moment based off curDate and a 12hr AM/PM format time string
+
+// Creates new moment based off curDate and a 12hr AM/PM format
 function getMoment12H(hour12) {
     return moment(curDate.format("YYYYMMDD ") + hour12, "YYYYMMDD hA");
 }
 
-// Create a new moment based off curDate and a 24hr format time string
+// Creates new moment based off curDate and a 24hr format
 function getMoment24H(hour24) {
     return moment(curDate.format("YYYYMMDD ") + hour24, "YYYYMMDD H");
 }
 
 // Document Ready
 $(function () {
-    // Set the date in the header
+    // Sets date in the header
     setCurrentDateLabel();
 
-    // Setup Save Button Events through the container element
+    // Saves time and description 
     $(".container").on("click", ".saveBtn", handleSave);
 
-    // Load the day into the view 
+    // Loads current day 
     loadDay();
 })

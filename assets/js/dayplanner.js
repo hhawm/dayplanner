@@ -22,12 +22,12 @@ function handleSave() {
     $("#updating").fadeIn(100).fadeOut(1000);
 }
 
-// Load the current day onto the page
+// Loads current day onto the page with 5 second fade-in
 function loadDay(fadeTime = 500) {
     clearInterval(updateInterval);
 
     $(".container").html(""); // Clear out old data
-    // Creates time-blocks
+    // Creates time-blocks (from CONSTANT at top)
     for (var i = 0; i < times.length; i++) {
         $(".container").append(createTimeBlock(times[i]));
     }
@@ -84,15 +84,16 @@ function createTimeBlock(hour24) {
     row.appendChild(colText);
     var colSave = createEl("div", "col-sm-1 col-12 saveBtn");
     row.appendChild(colSave);
-    var icon = createEl("i", "fas fa-save");
-    colSave.appendChild(icon);
+    // Disk icon from fontawesome.com
+    var iconSave = createEl("i", "far fa-save");
+    colSave.appendChild(iconSave);
 
     return timeBlock;
 }
 
 // Create a single page element
 // tag = tag to create 
-// cls = classes to asssign
+// cls = classes to assign
 // hour24 = the current hour (only used by hour and description classes)
 function createEl(tag, cls, hour24) {
     var el = document.createElement(tag);
@@ -163,16 +164,6 @@ function getMoment24H(hour24) {
 $(function () {
     // Set the date in the header
     setCurrentDateLabel();
-
-    // Load Multi-day setting from local storage and update the checked state
-    // loadMultiDaySettings();
-
-    // Watch for click of Enable Multi-day support
-    $("#enableDate").on("click", multiDayChecked);
-
-    // Initialize the Date Picker and Setup a 'change' event handler
-    $("#datepicker").val(moment().format('YYYY-MM-DD'));
-    $("#datepicker").on("change", datePickerChange);
 
     // Setup Save Button Events through the container element
     $(".container").on("click", ".saveBtn", handleSave);

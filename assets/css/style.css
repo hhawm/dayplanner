@@ -1,0 +1,150 @@
+body {
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+textarea{
+    background: transparent;
+    resize: none;
+    color: black;
+    border-left: 1px solid black;
+    padding: .5rem;
+  }
+
+.jumbotron {
+    text-align: center;
+    background-color: white
+    color: black;
+    border-bottom: 1rem solid black;
+    padding: 1rem;
+  }
+  
+footer {
+    margin-top: 2rem;
+  }
+
+.past {
+    background-color: gray;
+    color: white;
+  }  
+.present {
+    background-color: pink;
+    color: white;
+  }
+.future {
+    background-color: teal;
+    color: white;
+  }
+
+#dateOptions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+#labelDate {
+    margin: 1rem;
+  }
+
+#enableDate {
+    margin: 0.25rem;
+  }
+
+#dateGroup {
+    display: none;
+    margin: 1rem;
+  }
+
+input[type="date"] {
+    display: inline-block;
+    text-align: center;
+  }
+
+.description{
+    white-space: pre-wrap;
+  }
+  
+.time-block{
+    text-align: center;
+  }
+  
+.row {
+    white-space: pre-wrap;
+    height: 4rem;
+    border: 1px solid white;
+  }
+  
+.hour {
+    background-color: white;
+    color: black;
+    border-top: 1px dashed black;
+  }
+  
+.saveBtn {
+    background-color: lightskyblue;
+    color: white;
+    font-size: 2rem;
+    border-left: 1px solid black;
+    border-top-right-radius: 20px;
+    border-bottom: 1px solid white; 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+  }
+
+.saveBtn i:hover,
+.saveBtn.active i {
+    font-size: 3rem;
+    color: blue;
+  }
+
+#updating {
+    background-color: white;
+    color: red;
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+    text-align: center;
+    margin: 1rem;
+    
+  }
+
+.active {
+    opacity: 0.7;
+  }
+
+  @media screen and (max-width: 992px) {
+    .hour {
+      padding: 0px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .row {
+      height: 100%;
+    }
+    .hour,
+    .description,
+    .saveBtn {
+      width: 100%;
+    }
+    .hour {
+      text-align: center;
+      height: 3rem;
+      padding: 1rem;
+    }
+
+    .description {
+      white-space: normal;
+      height: 6rem;
+    }
+
+    .saveBtn {
+      text-align: center;
+      font-size: 30px;
+      height: 3rem;
+      margin-bottom: 1rem;
+    }
+  }
+

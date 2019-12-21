@@ -1,7 +1,7 @@
 // Times are supposed to be 9 AM til 5 PM, but went to midnight for testing
 const times = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
-// Updates past, present, future time-blocks every 30 seconds(set up at top)
+// Updates past, present, future time-blocks every 30 seconds
 const timeBlockCheck = 30000;
 var updateInterval;
 
@@ -63,8 +63,6 @@ function checkTimeBlocks() {
             $(this).removeClass("present future");
         } else if (tense === "future") {
             $(this).removeClass("past present");
-        } else {
-            alert("Unknown Tense");
         }
         $(this).addClass(tense);
     });

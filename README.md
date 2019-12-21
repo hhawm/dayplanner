@@ -1,8 +1,8 @@
 # dayplanner
 
-A simple day planner that allows the user to addd desciption or events for each hour of the day. This app will run in the browser and feature dynamically updated HTML and CSS powered by jQuery.
+A simple day planner that allows the user to add desciption or events for each hour of the day. This app will run in the browser and feature dynamically updated HTML and CSS powered by jQuery.
 
-The app will display hours 8 AM to 12 PM midnight. Each time slot should represent one hour and contain the following:
+The app will display hours 8 AM to 12 PM midnight. It should be set to 9 AM to 5 PM but did changed it to complete this homework. Each time slot should represent one hour and contain the following:
 
 * The time
 

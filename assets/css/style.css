@@ -113,6 +113,13 @@ footer {
     .hour {
       padding: 1rem;
     }
+
+    .saveBtn i:hover,
+    .saveBtn.active i {
+      font-size: 1.5rem;
+      color: white;
+      opacity: 1.0;
+    }
   }
 
   @media screen and (max-width: 600px) {
@@ -151,8 +158,9 @@ footer {
     }
     .saveBtn i:hover,
     .saveBtn.active i {
-      font-size: 2rem;
-      color: blue;
+      font-size: 1rem;
+      color: white;
+      opacity: 1.0;
     }
   }
 

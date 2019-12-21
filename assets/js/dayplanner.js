@@ -7,10 +7,11 @@ var updateInterval;
 
 // Sets current day from moment function
 var curDate = moment().clone();
+console.log(curDate);
 
-// Sets current day in the header
+// Sets current day in the header (DAY of WEEK, MONTH DAY YEAR, HOUR:MIN AM/PM
 function setCurrentDateLabel() {
-    $("#currentDay").text(curDate.format('dddd, MMMM Do'));
+    $("#currentDay").text(curDate.format('dddd, MMMM Do YYYY, h:mm A'));
 }
 
 // Saves date and description into localstorage
@@ -24,9 +25,11 @@ function handleSave() {
 
 // Loads current day onto the page with 5 second fade-in
 function loadDay(fadeTime = 500) {
-    clearInterval(updateInterval);
 
-    $(".container").html(""); // Clear out old data
+    // Clears old data
+    clearInterval(updateInterval);
+    $(".container").html("");
+
     // Creates time-blocks (from CONSTANT at top)
     for (var i = 0; i < times.length; i++) {
         $(".container").append(createTimeBlock(times[i]));
@@ -140,7 +143,6 @@ function getStoreDatePrefix() {
 function formatAmPm(m) {
     return m.format("h A");
 }
-
 
 // Creates new moment based off curDate and a 12hr AM/PM format
 function getMoment12H(hour12) {
